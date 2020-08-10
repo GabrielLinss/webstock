@@ -8,21 +8,23 @@ import Toast from '../../components/Toast';
 import { login } from '../../services/auth';
 import Header from '../../components/Header';
 import { Animated } from 'react-animated-css';
+import Loader from 'react-loader-spinner'
 
 const showToast = (type, message) => {
     switch (type) {
-      case 'error':
-        toast.error(message);
-        break;
-      case 'warning':
-        toast.warning(message);
-        break;
-      default:
-        toast.success(message);
+        case 'error':
+            toast.error(message);
+            break;
+        case 'warning':
+            toast.warning(message);
+            break;
+        default:
+            toast.success(message);
     }
 };
 
 function Login() {
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -42,6 +44,8 @@ function Login() {
                 password
             };
 
+            setLoading(true)
+
             const response = await api.post('/login', data);
 
             login(response.data.token, response.data.user.name);
@@ -49,8 +53,11 @@ function Login() {
             setEmail('');
             setPassword('');
 
+            setLoading(false)
+
             history.push('/');
         } catch (error) {
+            setLoading(false)
             showToast('error', 'Verifique suas credenciais e tente novamente!');
         }
     }
@@ -72,6 +79,16 @@ function Login() {
                             <legend>
                                 <h2>Login</h2>
                             </legend>
+
+                            <div style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'center' }}>
+                                <Loader
+                                    visible={loading}
+                                    type="TailSpin"
+                                    color="#14213D"
+                                    height={80}
+                                    width={80}
+                                />
+                            </div>
 
                             <div className="field">
                                 <label htmlFor="email">Email</label>

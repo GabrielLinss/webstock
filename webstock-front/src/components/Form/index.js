@@ -7,28 +7,36 @@ import { toast } from 'react-toastify';
 import Toast from '../Toast';
 import { getToken } from '../../services/auth';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux'
+import { saveProductRequest } from '../../store/modules/products/actions'
+import Loader from 'react-loader-spinner'
 
 const showToast = (type, message) => {
     switch (type) {
-      case 'success':
-        toast.success(message);
-        break;
-      case 'error':
-        toast.error(message);
-        break;
-      case 'warning':
-        toast.warning(message);
-        break;
-      default:
-        toast.success(message);
+        case 'success':
+            toast.success(message);
+            break;
+        case 'error':
+            toast.error(message);
+            break;
+        case 'warning':
+            toast.warning(message);
+            break;
+        default:
+            toast.success(message);
     }
 };
 
 function Form() {
+    const dispatch = useDispatch()
+
+    const loading = useSelector(state => state.products.loading)
+
     const [description, setDescription] = useState('');
     const [categoryId, setCategoryId] = useState(0);
     const [quantity, setQuantity] = useState(0);
-    const [enterAt, setEnterAt] = useState(moment(new Date()).format('YYYY/MM/DD HH:mm'));
+    const [enterAtDate, setEnterAtDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
+    const [enterAtHour, setEnterAtHour] = useState(moment(new Date()).format('HH:mm'));
     const [categories, setCategories] = useState([]);
 
     const history = useHistory();
@@ -36,7 +44,7 @@ function Form() {
     useEffect(() => {
         api.get('/categories', {
             headers: {
-              Authorization: `Bearer ${getToken()}`
+                Authorization: `Bearer ${getToken()}`
             }
         }).then(response => {
             setCategories(response.data);
@@ -45,36 +53,26 @@ function Form() {
         });
     }, [history]);
 
-    async function handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
 
-        if (!description || !categoryId || !quantity || !enterAt) {
+        if (!description || !categoryId || !quantity || !enterAtDate || !enterAtHour) {
             showToast('warning', 'Preencha todos os campos!');
             return;
         }
 
-        try {
-            const data = {
-                description,
-                category_id: categoryId,
-                quantity,
-                enter_at: enterAt
-            };
+        const data = {
+            description,
+            category_id: parseInt(categoryId),
+            quantity: parseInt(quantity),
+            enter_at: `${enterAtDate} ${enterAtHour}`
+        };
 
-            await api.post('/products', data, {
-                headers: {
-                  Authorization: `Bearer ${getToken()}`
-                }
-            });
+        dispatch(saveProductRequest(data))
 
-            setDescription('');
-            setCategoryId(0);
-            setQuantity(0);
-
-            showToast('success', 'Produto lançado!');
-        } catch (error) {
-            showToast('error', 'Tente novamente!');
-        }
+        setDescription('');
+        setCategoryId(0);
+        setQuantity(0);
     }
 
     return (
@@ -92,6 +90,16 @@ function Form() {
                         <h2>Dados do produto</h2>
                     </legend>
 
+                    <div style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'center' }}>
+                        <Loader
+                            visible={loading}
+                            type="TailSpin"
+                            color="#14213D"
+                            height={80}
+                            width={80}
+                        />
+                    </div>
+
                     <div className="field">
                         <label htmlFor="description">Descrição</label>
                         <input
@@ -106,9 +114,9 @@ function Form() {
                         <label htmlFor="category">Categoria</label>
                         <select value={categoryId} onChange={e => setCategoryId(e.target.value)} name="category" id="category">
                             <option value="0">Selecione uma categoria</option>
-                            { categories.map(category => (
-                                <option key={category.id} value={category.id}>{ category.name }</option>
-                            )) }
+                            {categories.map(category => (
+                                <option key={category.id} value={category.id}>{category.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="field">
@@ -122,13 +130,22 @@ function Form() {
                             onChange={e => setQuantity(e.target.value)} />
                     </div>
                     <div className="field">
-                        <label htmlFor="enterAt">Data de entrada</label>
+                        <label htmlFor="enterAtDate">Data de entrada</label>
                         <input
-                            type="text"
-                            id="enterAt"
-                            name="enterAt"
-                            value={enterAt}
-                            onChange={e => setEnterAt(e.target.value)} />
+                            type="date"
+                            id="enterAtDate"
+                            name="enterAtDate"
+                            defaultValue={enterAtDate}
+                            onChange={e => setEnterAtDate(e.target.value)} />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="enterAtHour">Hora de entrada</label>
+                        <input
+                            type="time"
+                            id="enterAtHour"
+                            name="enterAtHour"
+                            defaultValue={enterAtHour}
+                            onChange={e => setEnterAtHour(e.target.value)} />
                     </div>
                 </fieldset>
 

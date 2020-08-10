@@ -64,7 +64,8 @@ export const Container = styled.section`
 
             input[type=text],
             input[type=number],
-            input[type=date] {
+            input[type=date],
+            input[type=time] {
                 flex: 1;
                 background: #E5E5E5;
                 border-radius: 4px;

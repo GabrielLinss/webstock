@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 
 export const Container = styled(ToastContainer)`
 .Toastify__toast--success {
-    background: #14213D;
+    background: #00a896;
     border-radius: 4px;
 }
 

@@ -1,38 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from './styles';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import moment from 'moment';
 import { getToken } from '../../services/auth';
+import { useSelector, useDispatch } from 'react-redux'
+import { loadProductsRequest } from '../../store/modules/products/actions'
+import Loader from 'react-loader-spinner'
 
 function ProductsTable() {
-    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch()
+
+    const products = useSelector(state => state.products.data)
+    const loading = useSelector(state => state.products.loading)
+
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(0);
-
-    const history = useHistory();
 
     useEffect(() => {
         api.get('/categories', {
             headers: {
-              Authorization: `Bearer ${getToken()}`
+                Authorization: `Bearer ${getToken()}`
             }
         }).then(response => {
             setCategories(response.data);
         });
-    },[]);
+    }, []);
 
     useEffect(() => {
-        api.get(`/products?category_id=${selectedCategory}`, {
-            headers: {
-              Authorization: `Bearer ${getToken()}`
-            }
-        }).then(response => {
-            setProducts(response.data);
-        }).catch(() => {
-            history.push('/login');
-        });
-    },[selectedCategory, history]);
+        dispatch(loadProductsRequest(selectedCategory))
+    }, [selectedCategory]);
 
     return (
         <Container>
@@ -44,10 +41,20 @@ function ProductsTable() {
 
             <select onChange={e => setSelectedCategory(e.target.value)}>
                 <option value="0">Todas</option>
-                { categories.map(category => (
-                    <option key={category.id} value={category.id}>{ category.name }</option>
-                )) }
+                {categories.map(category => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
             </select>
+
+            <div style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', textAlign: 'center' }}>
+                <Loader
+                    visible={loading}
+                    type="TailSpin"
+                    color="#14213D"
+                    height={80}
+                    width={80}
+                />
+            </div>
 
             <table>
                 <thead>
@@ -60,15 +67,16 @@ function ProductsTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    { products.map(product => (
-                        <tr key={product.id}>
-                            <td>{ product.id }</td>
-                            <td>{ product.description }</td>
-                            <td>{ product.name }</td>
-                            <td>{ product.quantity }</td>
-                            <td>{ moment(product.enter_at).format('DD/MM/YYYY HH:mm') }</td>
-                        </tr>
-                    )) }
+                    {products &&
+                        products.map(product => (
+                            <tr key={product.id}>
+                                <td>{product.id}</td>
+                                <td>{product.description}</td>
+                                <td>{product.name}</td>
+                                <td>{product.quantity}</td>
+                                <td>{moment(product.enter_at).format('DD/MM/YYYY HH:mm')}</td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </Container>
