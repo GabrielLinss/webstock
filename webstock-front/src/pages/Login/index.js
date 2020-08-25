@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container } from './styles';
 import { FiLogIn } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
 import Toast from '../../components/Toast';
@@ -9,6 +9,7 @@ import { login } from '../../services/auth';
 import Header from '../../components/Header';
 import { Animated } from 'react-animated-css';
 import Loader from 'react-loader-spinner'
+import Footer from '../../components/Footer'
 
 const showToast = (type, message) => {
     switch (type) {
@@ -24,11 +25,11 @@ const showToast = (type, message) => {
 };
 
 function Login() {
+    const history = useHistory()
+
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const history = useHistory();
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -47,6 +48,8 @@ function Login() {
             setLoading(true)
 
             const response = await api.post('/login', data);
+
+            api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
             login(response.data.token, response.data.user.name);
 
@@ -119,6 +122,7 @@ function Login() {
                     </form>
                 </Container>
             </Animated>
+            <Footer/>
         </>
     );
 }

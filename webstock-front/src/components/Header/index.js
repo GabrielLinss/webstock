@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { getUserName, logout, isAuthenticated } from '../../services/auth';
 
 function Header() {
-    const history = useHistory();
+    const history = useHistory()
 
     function handleLogout() {
         logout();

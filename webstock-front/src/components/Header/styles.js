@@ -30,7 +30,8 @@ export const Container = styled.header`
         text-decoration: none;
         font-size: 14px;
         line-height: 45px;
-        transition: 0.2s;
+        transition: 0.3s;
+        border-bottom: 3px solid #14213D;
     }
 
     a:hover {
@@ -44,7 +45,8 @@ export const Container = styled.header`
         background: transparent;
         margin-left: 24px;
         border: 0;
-        transition: 0.2s;
+        transition: 0.3s;
+        border-bottom: 3px solid #14213D;
     }
 
     button:hover {

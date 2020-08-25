@@ -25,7 +25,8 @@ export const Container = styled.section`
         padding: 5px;
         border-radius: 4px;
         margin-bottom: 24px;
-        transition: 0.2s;
+        transition: 0.3s;
+        border-bottom: 3px solid #14213D;
     }
 
     a:hover {
@@ -112,7 +113,8 @@ export const Container = styled.section`
             border: 0;
             margin-top: 20px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
+            border-bottom: 3px solid #14213D;
         }
 
         button:hover {

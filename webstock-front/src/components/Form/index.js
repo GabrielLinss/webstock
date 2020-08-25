@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from './styles';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
@@ -39,8 +39,6 @@ function Form() {
     const [enterAtHour, setEnterAtHour] = useState(moment(new Date()).format('HH:mm'));
     const [categories, setCategories] = useState([]);
 
-    const history = useHistory();
-
     useEffect(() => {
         api.get('/categories', {
             headers: {
@@ -48,10 +46,8 @@ function Form() {
             }
         }).then(response => {
             setCategories(response.data);
-        }).catch(() => {
-            history.push('/login');
-        });
-    }, [history]);
+        }).catch(error => console.log(error));
+    }, []);
 
     function handleSubmit(event) {
         event.preventDefault();
