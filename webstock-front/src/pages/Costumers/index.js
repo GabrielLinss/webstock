@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../../components/Header';
-import Form from '../../components/Form';
-import { Animated } from "react-animated-css";
+import CostumersTable from '../../components/CostumersTable';
+import Header from '../../components/Header'
+import { Animated } from 'react-animated-css'
 
-function NewProduct() {
+function Costumers() {
     return (
         <>
             <Header />
@@ -13,10 +13,10 @@ function NewProduct() {
                 animationInDuration={800}
                 animationOutDuration={800}
                 isVisible={true}>
-                <Form />
+                <CostumersTable />
             </Animated>
         </>
-    );
+    )
 }
 
-export default NewProduct;
+export default Costumers;

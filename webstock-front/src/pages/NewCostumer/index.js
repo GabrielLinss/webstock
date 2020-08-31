@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header';
-import Form from '../../components/Form';
+import NewCostumerForm from '../../components/NewCostumerForm';
 import { Animated } from "react-animated-css";
 
 function NewProduct() {
@@ -13,7 +13,7 @@ function NewProduct() {
                 animationInDuration={800}
                 animationOutDuration={800}
                 isVisible={true}>
-                <Form />
+                <NewCostumerForm />
             </Animated>
         </>
     );

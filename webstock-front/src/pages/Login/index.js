@@ -1,28 +1,13 @@
 import React, { useState } from 'react';
 import { Container } from './styles';
 import { FiLogIn } from 'react-icons/fi';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
-import Toast from '../../components/Toast';
 import { login } from '../../services/auth';
-import Header from '../../components/Header';
 import { Animated } from 'react-animated-css';
 import Loader from 'react-loader-spinner'
 import Footer from '../../components/Footer'
-
-const showToast = (type, message) => {
-    switch (type) {
-        case 'error':
-            toast.error(message);
-            break;
-        case 'warning':
-            toast.warning(message);
-            break;
-        default:
-            toast.success(message);
-    }
-};
 
 function Login() {
     const history = useHistory()
@@ -35,7 +20,7 @@ function Login() {
         event.preventDefault();
 
         if (!email || !password) {
-            showToast('warning', 'Preencha todos os campos!');
+            toast.warning('Preencha todos os campos!')
             return;
         }
 
@@ -61,13 +46,12 @@ function Login() {
             history.push('/');
         } catch (error) {
             setLoading(false)
-            showToast('error', 'Verifique suas credenciais e tente novamente!');
+            toast.error('Verifique suas credenciais e tente novamente!')
         }
     }
 
     return (
         <>
-            <Header />
             <Animated
                 animationIn="fadeInLeft"
                 animationOut="fadeOutLeft"
@@ -75,8 +59,6 @@ function Login() {
                 animationOutDuration={800}
                 isVisible={true}>
                 <Container>
-                    <Toast />
-
                     <form onSubmit={handleSubmit}>
                         <fieldset>
                             <legend>
@@ -122,7 +104,7 @@ function Login() {
                     </form>
                 </Container>
             </Animated>
-            <Footer/>
+            <Footer />
         </>
     );
 }

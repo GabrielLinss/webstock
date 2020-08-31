@@ -4,28 +4,10 @@ import { Link } from 'react-router-dom';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
-import Toast from '../Toast';
-import { getToken } from '../../services/auth';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux'
 import { saveProductRequest } from '../../store/modules/products/actions'
 import Loader from 'react-loader-spinner'
-
-const showToast = (type, message) => {
-    switch (type) {
-        case 'success':
-            toast.success(message);
-            break;
-        case 'error':
-            toast.error(message);
-            break;
-        case 'warning':
-            toast.warning(message);
-            break;
-        default:
-            toast.success(message);
-    }
-};
 
 function Form() {
     const dispatch = useDispatch()
@@ -40,20 +22,17 @@ function Form() {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        api.get('/categories', {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }).then(response => {
-            setCategories(response.data);
-        }).catch(error => console.log(error));
+        api.get('/categories')
+            .then(response => {
+                setCategories(response.data);
+            }).catch(error => console.log(error));
     }, []);
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        if (!description || !categoryId || !quantity || !enterAtDate || !enterAtHour) {
-            showToast('warning', 'Preencha todos os campos!');
+        if (!description || !categoryId || !enterAtDate || !enterAtHour) {
+            toast.warning('Preencha todos os campos!')
             return;
         }
 
@@ -77,8 +56,6 @@ function Form() {
                 <FiArrowLeft size={18} />&nbsp;
                 Voltar
             </Link>
-
-            <Toast />
 
             <form onSubmit={handleSubmit}>
                 <fieldset>

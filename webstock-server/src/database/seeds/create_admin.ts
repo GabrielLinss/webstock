@@ -8,5 +8,5 @@ function generateHashPassword(password: string) {
 }
 
 export async function seed(knex: Knex) {
-    await knex('users').insert({ name: 'Admin', email: 'admin@webstock.com', password: generateHashPassword('Admin!@#') });
+    await knex('users').insert({ name: 'Admin', email: 'admin@webstock.com', password: generateHashPassword('123') });
 }

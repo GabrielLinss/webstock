@@ -5,8 +5,15 @@ export const Container = styled.header`
     background: #14213D;
     padding: 0 24px;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
+
+    .banner, .buttons {
+        display: flex;
+        align-items: center;
+    }
 
     img {
         height: 45px;
@@ -20,12 +27,10 @@ export const Container = styled.header`
     }
 
     a {
-        margin-left: auto;
         color: #fff;
-        width: 200px;
+        width: 100px;
         background: transparent;
         font-weight: 700;
-        display: inline-block;
         text-align: center;
         text-decoration: none;
         font-size: 14px;
@@ -44,7 +49,7 @@ export const Container = styled.header`
         width: 45px;
         background: transparent;
         margin-left: 24px;
-        border: 0;
+        border: none;
         transition: 0.3s;
         border-bottom: 3px solid #14213D;
     }
@@ -56,10 +61,6 @@ export const Container = styled.header`
     @media (max-width: 767px) {
         a {
             display: none;
-        }
-
-        button {
-            margin-left: auto;
         }
     }
 `;

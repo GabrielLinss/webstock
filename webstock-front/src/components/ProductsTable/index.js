@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from './styles';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import moment from 'moment';
-import { getToken } from '../../services/auth';
 import { useSelector, useDispatch } from 'react-redux'
 import { loadProductsRequest } from '../../store/modules/products/actions'
 import Loader from 'react-loader-spinner'
+import { FaPlus } from 'react-icons/fa'
 
 function ProductsTable() {
     const dispatch = useDispatch()
@@ -18,22 +18,26 @@ function ProductsTable() {
     const [selectedCategory, setSelectedCategory] = useState(0);
 
     useEffect(() => {
-        api.get('/categories', {
-            headers: {
-                Authorization: `Bearer ${getToken()}`
-            }
-        }).then(response => {
-            setCategories(response.data);
-        }).catch(error => console.log(error));
+        api.get('/categories')
+            .then(response => {
+                setCategories(response.data);
+            }).catch(error => console.log(error));
     }, []);
 
+    const loadProducts = useCallback((category) => {
+        dispatch(loadProductsRequest(category))
+    }, [dispatch])
+
     useEffect(() => {
-        dispatch(loadProductsRequest(selectedCategory))
-    }, [selectedCategory]);
+        loadProducts(selectedCategory)
+    }, [loadProducts, selectedCategory]);
 
     return (
         <Container>
-            <Link to="/new">Lançar novo produto</Link>
+            <Link to="/new-product">
+                Lançar novo produto&nbsp;&nbsp;&nbsp;
+                <FaPlus color="white" size={18} />
+            </Link>
 
             <h1>Produtos</h1>
 
