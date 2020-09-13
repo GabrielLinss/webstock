@@ -34,8 +34,6 @@ function Login() {
 
             const response = await api.post('/login', data);
 
-            api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
-
             login(response.data.token, response.data.user.name);
 
             setEmail('');
