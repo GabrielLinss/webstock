@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { Container } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
 import { loadCostumersRequest } from '../../store/modules/costumers/actions'
@@ -11,12 +11,14 @@ import { FaUserPlus } from 'react-icons/fa'
 function CostumersTable() {
     const dispatch = useDispatch()
 
+    const history = useHistory()
+
     const costumers = useSelector(state => state.costumers.data)
     const loading = useSelector(state => state.costumers.loading)
 
     const loadCostumers = useCallback(() => {
-        dispatch(loadCostumersRequest())
-    }, [dispatch])
+        dispatch(loadCostumersRequest(history))
+    }, [dispatch, history])
 
     useEffect(() => {
         loadCostumers()
@@ -24,7 +26,7 @@ function CostumersTable() {
 
     return (
         <Container>
-            <Link to="/new-costumer">
+            <Link to="/novo-cliente">
                 Cadastrar novo cliente&nbsp;&nbsp;&nbsp;
                 <FaUserPlus color="white" size={20} />
             </Link>
