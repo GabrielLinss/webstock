@@ -1,7 +1,7 @@
-export function saveProductRequest(data) {
+export function saveProductRequest(data, history) {
     return {
         type: '@products/SAVE_PRODUCT_REQUEST',
-        payload: { data }
+        payload: { data, history }
     };
 }
 
@@ -17,10 +17,10 @@ export function saveProductFailure() {
     };
 }
 
-export function loadProductsRequest(selectedCategory) {
+export function loadProductsRequest(selectedCategory, history) {
     return {
         type: '@products/LOAD_PRODUCTS_REQUEST',
-        payload: { selectedCategory }
+        payload: { selectedCategory, history }
     };
 }
 

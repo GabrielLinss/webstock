@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import api from '../../services/api';
+import { logout } from '../../services/auth';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux'
 import { saveProductRequest } from '../../store/modules/products/actions'
 import Loader from 'react-loader-spinner'
 
-function Form() {
+function NewProductForm() {
     const dispatch = useDispatch()
+
+    const history = useHistory()
 
     const loading = useSelector(state => state.products.loading)
 
@@ -25,8 +28,20 @@ function Form() {
         api.get('/categories')
             .then(response => {
                 setCategories(response.data);
-            }).catch(error => console.log(error));
-    }, []);
+            }).catch(error => {
+                if (error.response.data && error.response.data.length > 0) {
+                    const status = error.response.data[0]
+
+                    if (status.error === 'Token invalid') {
+                        toast.error('Sessão expirada!')
+
+                        logout()
+
+                        history.push('/login');
+                    }
+                }
+            });
+    }, [history]);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -43,7 +58,7 @@ function Form() {
             enter_at: `${enterAtDate} ${enterAtHour}`
         };
 
-        dispatch(saveProductRequest(data))
+        dispatch(saveProductRequest(data, history))
 
         setDescription('');
         setCategoryId(0);
@@ -52,7 +67,7 @@ function Form() {
 
     return (
         <Container>
-            <Link to="/">
+            <Link to="/produtos">
                 <FiArrowLeft size={18} />&nbsp;
                 Voltar
             </Link>
@@ -128,4 +143,4 @@ function Form() {
     );
 }
 
-export default Form;
+export default NewProductForm;

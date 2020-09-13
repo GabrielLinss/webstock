@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import api from '../../services/api';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
 import { loadProductsRequest } from '../../store/modules/products/actions'
 import Loader from 'react-loader-spinner'
 import { FaPlus } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 function ProductsTable() {
     const dispatch = useDispatch()
+
+    const history = useHistory()
 
     const products = useSelector(state => state.products.data)
     const loading = useSelector(state => state.products.loading)
@@ -21,12 +24,14 @@ function ProductsTable() {
         api.get('/categories')
             .then(response => {
                 setCategories(response.data);
-            }).catch(error => console.log(error));
+            }).catch(error => {
+                toast.error('Erro ao carregar categorias!')
+            });
     }, []);
 
     const loadProducts = useCallback((category) => {
-        dispatch(loadProductsRequest(category))
-    }, [dispatch])
+        dispatch(loadProductsRequest(category, history))
+    }, [dispatch, history])
 
     useEffect(() => {
         loadProducts(selectedCategory)
@@ -34,7 +39,7 @@ function ProductsTable() {
 
     return (
         <Container>
-            <Link to="/new-product">
+            <Link to="/novo-produto">
                 Lançar novo produto&nbsp;&nbsp;&nbsp;
                 <FaPlus color="white" size={18} />
             </Link>

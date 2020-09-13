@@ -1,26 +1,26 @@
 import React from 'react';
-import Header from '../../components/Header';
-import NewProductForm from '../../components/NewProductForm';
+import ProductsTable from '../../components/ProductsTable';
 import { Animated } from "react-animated-css";
+import Header from '../../components/Header';
 import { Helmet } from "react-helmet";
 
-function NewProduct() {
+function Products() {
     return (
         <>
             <Helmet>
-                <title>Webstock - Novo produto</title>
+                <title>Webstock - Produtos</title>
             </Helmet>
             <Header />
             <Animated
-                animationIn="fadeInRight"
-                animationOut="fadeOutRight"
+                animationIn="fadeInLeft"
+                animationOut="fadeOutLeft"
                 animationInDuration={800}
                 animationOutDuration={800}
                 isVisible={true}>
-                <NewProductForm />
+                <ProductsTable />
             </Animated>
         </>
-    );
+    )
 }
 
-export default NewProduct;
+export default Products;

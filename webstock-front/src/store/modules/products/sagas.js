@@ -1,6 +1,7 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import api from '../../../services/api';
+import { logout } from '../../../services/auth';
 
 import {
     saveProductSuccess,
@@ -20,9 +21,22 @@ export function* saveProduct({ payload }) {
         toast.success(`Produto ${product.description} lançado com sucesso!`)
         yield put(saveProductSuccess())
     } catch (e) {
-        console.log(e);
         toast.error('Ocorreu um erro ao lançar o produto!')
         yield put(saveProductFailure())
+
+        if (e.response.data && e.response.data.length > 0) {
+            const status = e.response.data[0]
+
+            if (status.error === 'Token invalid') {
+                toast.error('Sessão expirada!')
+
+                logout()
+
+                const { history } = payload
+
+                history.push('/login');
+            }
+        }
     }
 }
 
@@ -34,9 +48,22 @@ export function* loadProducts({ payload }) {
 
         yield put(loadProductsSuccess(response.data))
     } catch (e) {
-        console.log(e);
         toast.error('Ocorreu um erro ao carregar os produtos!')
         yield put(loadProductsFailure())
+
+        if (e.response.data && e.response.data.length > 0) {
+            const status = e.response.data[0]
+
+            if (status.error === 'Token invalid') {
+                toast.error('Sessão expirada!')
+
+                logout()
+
+                const { history } = payload
+
+                history.push('/login');
+            }
+        }
     }
 }
 
