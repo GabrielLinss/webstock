@@ -1,43 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container } from './styles';
 import { FiLogOut } from 'react-icons/fi';
-import { FaBoxes } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { FaBoxes, FaHome } from 'react-icons/fa';
+import { useHistory } from 'react-router-dom';
 import { getUserName, logout } from '../../services/auth';
-import Modal from '../../components/Modal'
 
 function Header() {
     const history = useHistory()
 
-    const [showModal, setShowModal] = useState(false)
-
     function handleLogout() {
-        logout();
+        if (window.confirm('Deseja realmente sair ?')) {
+            logout();
 
-        history.push('/login');
+            history.push('/login');
+        }
     }
 
     return (
-        <>
-            <Modal show={showModal} close={() => setShowModal(false)} confirm={handleLogout}>
-                Deseja realmente sair ?
-            </Modal>
+        <Container>
+            <div className="banner">
+                <FaBoxes color="white" size={22} />
+                <span>Olá, {getUserName()}</span>
+            </div>
 
-            <Container>
-                <div className="banner">
-                    <FaBoxes color="white" size={22} />
-                    <span>Olá, {getUserName()}</span>
-                </div>
-
-                <div className="buttons">
-                    <Link to="/">Produtos</Link>
-                    <Link to="/costumers">Clientes</Link>
-                    <button type="button" onClick={() => setShowModal(true)}>
-                        <FiLogOut size={18} color="#fff" />
-                    </button>
-                </div>
-            </Container>
-        </>
+            <div className="buttons">
+                <button type="button" onClick={() => history.push('/')}>
+                    <FaHome size={18} color="#fff" />
+                </button>
+                <button type="button" onClick={handleLogout}>
+                    <FiLogOut size={18} color="#fff" />
+                </button>
+            </div>
+        </Container>
     );
 }
 
