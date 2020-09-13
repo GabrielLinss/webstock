@@ -2,10 +2,14 @@ import React from 'react';
 import CostumersTable from '../../components/CostumersTable';
 import Header from '../../components/Header'
 import { Animated } from 'react-animated-css'
+import { Helmet } from "react-helmet";
 
 function Costumers() {
     return (
         <>
+            <Helmet>
+                <title>Webstock - Clientes</title>
+            </Helmet>
             <Header />
             <Animated
                 animationIn="fadeInRight"

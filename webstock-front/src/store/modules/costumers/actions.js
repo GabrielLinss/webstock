@@ -1,7 +1,7 @@
-export function saveCostumerRequest(data) {
+export function saveCostumerRequest(data, history) {
     return {
         type: '@costumers/SAVE_COSTUMER_REQUEST',
-        payload: { data }
+        payload: { data, history }
     };
 }
 
@@ -17,9 +17,10 @@ export function saveCostumerFailure() {
     };
 }
 
-export function loadCostumersRequest() {
+export function loadCostumersRequest(history) {
     return {
-        type: '@costumers/LOAD_COSTUMERS_REQUEST'
+        type: '@costumers/LOAD_COSTUMERS_REQUEST',
+        payload: { history }
     };
 }
 

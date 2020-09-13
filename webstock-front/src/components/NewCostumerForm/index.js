@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft, FiSave } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,8 @@ import moment from 'moment'
 
 function NewCostumerForm() {
     const dispatch = useDispatch()
+
+    const history = useHistory()
 
     const loading = useSelector(state => state.costumers.loading)
 
@@ -49,7 +51,7 @@ function NewCostumerForm() {
             data.cnpj = cnpj
         }
 
-        dispatch(saveCostumerRequest(data))
+        dispatch(saveCostumerRequest(data, history))
 
         setName('');
         setCpf('');
@@ -64,7 +66,7 @@ function NewCostumerForm() {
 
     return (
         <Container>
-            <Link to="/costumers">
+            <Link to="/clientes">
                 <FiArrowLeft size={18} />&nbsp;
                 Voltar
             </Link>
