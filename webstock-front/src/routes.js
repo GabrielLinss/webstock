@@ -5,7 +5,12 @@ import NewProduct from './pages/NewProduct';
 import Login from './pages/Login';
 import Costumers from './pages/Costumers';
 import NewCostumer from './pages/NewCostumer';
+import Products from './pages/Products';
 import { isAuthenticated } from './services/auth';
+import Categories from './pages/Categories'
+import Users from './pages/Users'
+import Accounts from './pages/Accounts'
+import NewAccount from './pages/NewAccount'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -26,9 +31,14 @@ export default function Routes() {
             <Switch>
                 <Route path="/login" exact component={Login} />
                 <PrivateRoute path="/" exact component={Dashboard} />
-                <PrivateRoute path="/new-product" exact component={NewProduct} />
-                <PrivateRoute path="/costumers" exact component={Costumers} />
-                <PrivateRoute path="/new-costumer" exact component={NewCostumer} />
+                <PrivateRoute path="/produtos" exact component={Products} />
+                <PrivateRoute path="/novo-produto" exact component={NewProduct} />
+                <PrivateRoute path="/clientes" exact component={Costumers} />
+                <PrivateRoute path="/novo-cliente" exact component={NewCostumer} />
+                <PrivateRoute path="/categorias" exact component={Categories} />
+                <PrivateRoute path="/usuarios" exact component={Users} />
+                <PrivateRoute path="/contas" exact component={Accounts} />
+                <PrivateRoute path="/nova-conta" exact component={NewAccount} />
             </Switch>
         </BrowserRouter>
     );

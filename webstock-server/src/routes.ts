@@ -5,6 +5,8 @@ import CostumerController from './controllers/CostumerController';
 import { celebrate, Joi } from 'celebrate';
 import AuthController from './controllers/AuthController';
 import AuthMiddleware from './middlewares/Auth';
+import UserController from './controllers/UserController'
+import AccountController from './controllers/AccountController'
 
 const routes = Router();
 
@@ -13,10 +15,22 @@ const categoryController = new CategoryController();
 const authController = new AuthController();
 const authMiddleware = new AuthMiddleware();
 const costumerController = new CostumerController();
+const userController = new UserController()
+const accountController = new AccountController()
 
 routes.post('/login', authController.login);
 
 routes.get('/categories', authMiddleware.interceptRequest, categoryController.index);
+
+routes
+    .post('/categories',
+        authMiddleware.interceptRequest,
+        celebrate({
+            body: Joi.object().keys({
+                name: Joi.string().required()
+            })
+        }),
+        categoryController.store);
 
 routes.get('/products', authMiddleware.interceptRequest, productController.index);
 
@@ -47,5 +61,34 @@ routes
             })
         }),
         costumerController.store);
+
+routes.get('/users', authMiddleware.interceptRequest, userController.index);
+
+routes
+    .post('/users',
+        authMiddleware.interceptRequest,
+        celebrate({
+            body: Joi.object().keys({
+                name: Joi.string().required(),
+                email: Joi.string().required(),
+                password: Joi.string().required()
+            })
+        }),
+        userController.store);
+
+routes.get('/accounts', authMiddleware.interceptRequest, accountController.index);
+
+routes
+    .post('/accounts',
+        authMiddleware.interceptRequest,
+        celebrate({
+            body: Joi.object().keys({
+                costumer_id: Joi.number().required(),
+                balance: Joi.number().required(),
+                debt: Joi.number().required(),
+                created_at: Joi.date().required()
+            })
+        }),
+        accountController.store);
 
 export default routes;
