@@ -20,7 +20,7 @@ function NewAccountForm() {
     const [costumerId, setCostumerId] = useState(0);
     const [balance, setBalance] = useState(0);
     const [debt, setDebt] = useState(0);
-    const [createdAt, setCreatedAt] = useState(moment(new Date()).format('YYYY-MM-DD HH:mm'));
+    const createdAt = moment().format('YYYY-MM-DD HH:mm');
     const [costumers, setCostumers] = useState([]);
 
     useEffect(() => {

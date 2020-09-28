@@ -12,7 +12,7 @@ export function* saveAccount({ payload }) {
     try {
         const { data } = payload
 
-        const response = yield call(api.post, '/accounts', data)
+        yield call(api.post, '/accounts', data)
 
         toast.success('Conta criada com sucesso!')
         yield put(saveAccountSuccess())

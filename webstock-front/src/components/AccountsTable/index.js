@@ -116,7 +116,7 @@ function AccountsTable() {
                     {accounts &&
                         accounts.map(account => (
                             <tr key={account.id}>
-                                <td>{account.costumer_id}</td>
+                                <td>{account.name}</td>
                                 <td>R$ {new Intl.NumberFormat('pt-BR').format(account.balance)}</td>
                                 <td>R$ {new Intl.NumberFormat('pt-BR').format(account.debt)}</td>
                                 <td>{moment(account.created_at).format('DD/MM/YYYY HH:mm')}</td>

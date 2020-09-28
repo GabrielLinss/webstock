@@ -64,6 +64,8 @@ routes
 
 routes.get('/users', authMiddleware.interceptRequest, userController.index);
 
+routes.get('/users/:token', userController.show);
+
 routes
     .post('/users',
         authMiddleware.interceptRequest,
@@ -75,6 +77,17 @@ routes
             })
         }),
         userController.store);
+
+routes
+    .put('/users/:id',
+        authMiddleware.interceptRequest,
+        celebrate({
+            body: Joi.object().keys({
+                name: Joi.string().required(),
+                email: Joi.string().required()
+            })
+        }),
+        userController.update);
 
 routes.get('/accounts', authMiddleware.interceptRequest, accountController.index);
 

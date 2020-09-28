@@ -12,11 +12,12 @@ class AccountController {
                 .join('costumers', 'accounts.costumer_id', '=', 'costumers.id')
                 .where('costumers.name', 'LIKE', `%${name}%`)
                 .orderBy('accounts.id', 'desc')
-                .select('accounts.*');
+                .select('accounts.*', 'costumers.name');
         } else {
             accounts = await knex('accounts')
+                .join('costumers', 'accounts.costumer_id', '=', 'costumers.id')
                 .orderBy('accounts.id', 'desc')
-                .select('*');
+                .select('accounts.*', 'costumers.name');
         }
 
         return res.json(accounts);

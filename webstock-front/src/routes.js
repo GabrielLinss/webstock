@@ -11,6 +11,7 @@ import Categories from './pages/Categories'
 import Users from './pages/Users'
 import Accounts from './pages/Accounts'
 import NewAccount from './pages/NewAccount'
+import Settings from './pages/Settings'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -39,6 +40,7 @@ export default function Routes() {
                 <PrivateRoute path="/usuarios" exact component={Users} />
                 <PrivateRoute path="/contas" exact component={Accounts} />
                 <PrivateRoute path="/nova-conta" exact component={NewAccount} />
+                <PrivateRoute path="/configuracoes" exact component={Settings} />
             </Switch>
         </BrowserRouter>
     );
