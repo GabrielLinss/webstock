@@ -11,7 +11,7 @@
         "@types/styled-components": "^5.1.0",
         "axios": "^0.19.2",
         "history": "^5.0.0",
-        "immer": "^7.0.7",
+        "immer": "^9.0.6",
         "moment": "^2.26.0",
         "react": "^16.13.1",
         "react-animated-css": "^1.2.1",
